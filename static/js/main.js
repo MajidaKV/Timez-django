@@ -83,9 +83,8 @@
         }
     });
 
-
-    // Product Quantity
-    $('.quantity button').on('click', function () {
+    //Product Quantity
+    ('.quantity button').on('click', function () {
         var button = $(this);
         var oldValue = button.parent().parent().find('input').val();
         if (button.hasClass('btn-plus')) {
@@ -101,4 +100,3 @@
     });
 
 })(jQuery);
-

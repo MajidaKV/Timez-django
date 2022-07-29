@@ -68,13 +68,13 @@
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
-                <form action="">
+                <form action="{% url 'search' %}" method='GET' class="search">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
+                        <input type="text" class="form-control" placeholder="Search for products" name="keyword">
                         <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-search" ></i>
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -84,9 +84,9 @@
                     <i class="fas fa-heart text-primary"></i>
                     <span class="badge">0</span>
                 </a>
-                <a href="" class="btn border">
+                <a href="{% url 'cart' %}" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge">{{cart_count}}</span>
                 </a>
             </div>
         </div>
@@ -106,7 +106,7 @@
                     <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
                         <a href="{% url 'store' %}" class="nav-link">ALL PRODUCTS</a>
                         {% for category in links %}
-                            <a href="{{ category.get_url }}" class="nav-link">{{ category.category_name }}<i class="fa fa-angle-down float-right mt-1"></i></a>
+                            <a href="{{ category.get_url }}" class="nav-link">{{ category.category_name }}<!--<i class="fa fa-angle-down float-right mt-1"></i>--></a>
                         {% endfor %}
                     </div>
                 </nav>
@@ -123,10 +123,10 @@
                         <div class="navbar-nav mr-auto py-0">
                             <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
                             <a href="{% url 'store' %}" class="nav-item nav-link">Shop</a>
-                            <a href="detail.html" class="nav-item nav-link">Shop Detail</a>                                    
-                            <a href="cart.html" class="nav-item nav-link">Shopping Cart</a>
-                            <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="#" class="nav-item nav-link">Shop Detail</a>                                    
+                            <a href="{% url 'cart' %}" class="nav-item nav-link">Shopping Cart</a>
+                            <a href="{% url 'checkout' %}" class="nav-item nav-link">Checkout</a>
+                            <a href="#" class="nav-item nav-link">Contact</a>
                         </div>
                         {% if user.id is None %}
                         <div class="navbar-nav ml-auto py-0">
@@ -149,7 +149,7 @@
                                 <div class="p-3" style="max-width: 700px;">
                                     <h4 class="text-light text-uppercase font-weight-medium mb-3">Enchanted Garden</h4>
                                     <h3 class="display-4 text-white font-weight-semi-bold mb-4">Unisex Watch</h3>
-                                    <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
+                                    <a href="{% url 'store' %}" class="btn btn-light py-2 px-3">Shop Now</a>
                                 </div>
                             </div>
                         </div>
@@ -347,8 +347,9 @@
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between bg-light border">
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                        <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                        <a href="{{ product.get_url }}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                        <a href="{% url 'add_cart' product.id %}" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                        <a href="#" class="btn btn-sm text-dark p-0"><i class="fas fa-heart text-primary mr-1 ml-4"></i>Wishlist</a>
                     </div>
                 </div>
             </div>

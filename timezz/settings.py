@@ -155,3 +155,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'majidakv@gmail.com'
 EMAIL_HOST_PASSWORD = 'uqgh gnzd azji skze'
 EMAIL_USE_TLS = True
+
+KEY = 'rzp_test_NNYgytwoxPgefB'
+SECRET ='93YDoFVC5WOPBN7CXkBFynBr'

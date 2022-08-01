@@ -10,7 +10,9 @@ from shop.models import Account
 class Cart(models.Model):
     cart_id = models.CharField(max_length=250, blank=True)
     date_added = models.DateField(auto_now_add=True)
-
+    razor_pay_order_id = models.CharField(max_length=100, null=True, blank=True)
+    razor_pay_payment_id = models.CharField(max_length=100, null=True, blank=True)
+    razor_pay_payment_signature = models.CharField(max_length=100, null=True, blank=True)
     def __str__(self):
         return self.cart_id
 

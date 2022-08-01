@@ -4,11 +4,81 @@ from django.shortcuts import render,redirect
 from carts.models import CartItem
 from .models import Order
 from .forms import OrderForm
+from order.models import Order, OrderProduct, Payment
+from store.models import Product
+import razorpay
+from django.conf import settings
+from django.http import JsonResponse
+import json
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 # Create your views here.
 
 def payments(request):
-    return render(request,'payments.html')
+    body = json.loads(request.body)
+    order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['order_number'])
+    print(body)
+    payment = Payment(
+        user = request.user,
+        payment_id = body['razorpay_payment_id'],
+        amount_paid = body['amount_paid'],
+        status = body['status'],
+        payment_method = body['payment_method']
+    )
+    payment.save()
+    order.payment = payment 
+    order.is_ordered = True
+    order.save()
+    
+    cart_items = CartItem.objects.filter(user=request.user)
+
+    for item in cart_items:
+        orderproduct = OrderProduct()
+        orderproduct.order_id = order.id
+        orderproduct.payment = payment
+        orderproduct.user_id = request.user.id
+        orderproduct.product_id = item.product_id
+        orderproduct.quantity = item.quantity
+        orderproduct.product_price = item.product.price
+        orderproduct.ordered = True
+        orderproduct.save()
+
+        
+        cart_item = CartItem.objects.get(id=item.id)
+        product_variation = cart_item.variations.all()
+        orderproduct = OrderProduct.objects.get(id=orderproduct.id)
+        orderproduct.Variation.set(product_variation)
+        orderproduct.save()
+
+        #reduce the quantity of sold product
+        product = Product.objects.get(id=item.product_id)
+        product.stock -= item.quantity
+        product.save()
+
+    #clear cart
+    CartItem.objects.filter(user=request.user).delete()
+
+    #send order recieved email
+    mail_subject = 'Thank You. Your order has been recieved'
+    message = render_to_string('order_recieved_email.html',{
+        'user':request.user,
+        'order':order,
+        # 'domain':current_site,
+        # 'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+        # 'token':default_token_generator.make_token(user)
+    })
+    to_email = request.user.email
+    send_email = EmailMessage(mail_subject, message, to=[to_email])
+    send_email.send()
+
+
+    data = {
+        'order_number': order.order_number,
+        'payment_id': payment.payment_id,
+    }
+    return JsonResponse(data)
+    
 
 def place_order(request, total=0, quantity=0):
     current_user=request.user
@@ -39,10 +109,8 @@ def place_order(request, total=0, quantity=0):
             data.city=form.cleaned_data['city']
             data.state=form.cleaned_data['state']
             data.order_total=total
-            # data.ip=request.META.get('REMOTE_ADDR')
+            data.ip=request.META.get('REMOTE_ADDR')
             data.save()
-            # form.save()
-            # print('hghghgh')
             #genetate order number
             yr=int(datetime.date.today().strftime('%Y'))
             dt=int(datetime.date.today().strftime('%d'))
@@ -54,15 +122,51 @@ def place_order(request, total=0, quantity=0):
             data.save()
 
             order=Order.objects.get(user=current_user,is_ordered=False,order_number=order_number)
+            client = razorpay.Client(auth=(settings.KEY, settings.SECRET))
+            DATA = {
+                'amount' : data.order_total*100,
+                'currency' : 'INR',
+                'payment_capture' : 1,
+            }
+            payment = client.order.create(data=DATA)
+
+
+            print('***')
+            print(payment)
             context={
                 'order':order,
                 'cart_items':cart_items,
                 'total':total,
+                'payment' : payment,
             }
             return render(request,'payments.html',context)
     else:
         return redirect('checkout')
-    return render(request,'checkout.html')
+    #return render(request,'checkout.html')
+
+
+
+def order_complete(request):
+    return render(request, 'order_complete.html')
+
+    # order_number = request.GET.get('order_number')
+    # transID = request.GET.get('payment_id')
+    # try:
+    #     order = Order.objects.get(order_number=order_number, is_ordered=True)
+    #     ordered_products = OrderProduct.objects.filter(order_id=order.id)
+    #     payment = Payment.objects.get(payment_id=transID)
+    #     context = {
+    #         'order':order,
+    #         'ordered_products':ordered_products,
+    #         'order_number':order.order_number,
+    #         'transID': payment.payment_id,
+    #         'payment': payment
+
+    #     }
+    #     return render(request, 'order_complete.html',context)
+    # except(Payment.DoesNotExist, Order.DoesNotExist):
+    #      return redirect('home')
+
     
     
             

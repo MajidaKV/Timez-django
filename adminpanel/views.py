@@ -190,10 +190,12 @@ def order_table(request,id):
         if id==1:
             return render (request,'adminpanel/order_table/orders.html',context)
         elif id==2:
-            return render(request,'adminpanel/order_table/accepted_orders.html',context)
+            return render(request,'adminpanel/order_table/order_products.html',context)   
         elif id==3:
-            return render(request,'adminpanel/order_table/completed_orders.html',context)
+            return render(request,'adminpanel/order_table/accepted_orders.html',context)
         elif id==4:
+            return render(request,'adminpanel/order_table/completed_orders.html',context)
+        elif id==5:
             return render(request,'adminpanel/order_table/cancelled_orders.html',context)
         else:
             return render(request,'adminpanel/order_table/payments.html',context)
@@ -452,6 +454,134 @@ def caraousel_available(request,id):
 
 @login_required(login_url="login")
 def delete_carousel(request,id):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     if request.user.is_superadmin:
         carousel = Carousel.objects.get(id=id)
         carousel.delete()

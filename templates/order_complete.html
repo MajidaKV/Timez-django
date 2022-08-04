@@ -13,7 +13,7 @@
 	</div>
 </div>
 
-{% comment %} <div class="container" style="margin: 0 auto;width: 50%;padding: 50px;background: #f1f1f1;margin-top: 50px;margin-bottom: 50px;">
+  <div class="container" style="margin: 0 auto;width: 50%;padding: 50px;background: #f1f1f1;margin-top: 50px;margin-bottom: 50px;">
     <div class="row invoice row-printable">
         <div class="col-md-12">
             <!-- col-lg-12 start here -->
@@ -24,7 +24,7 @@
                         <!-- Start .row -->
                          <div class="col-lg-6">
                             <!-- col-lg-6 start here -->
-                            <div class="invoice-logo"><img src="" alt="Invoice logo" style="max-height: 40px;"></div>
+                            <div  class="invoice-logo "><img style="display: block; max-width: 100%; height: 100px;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1PnrFpbyMCPINcObbHJ6Wv0h7SIjtllh9Pg&usqp=CAU"></div>
                         </div>  
                         <!-- col-lg-6 end here -->
                          <div class="col-lg-6">
@@ -37,7 +37,7 @@
                                     <li>{{order.city}},{{order.state}}</li>
                                     <li>{{order.country}}</li>
                                 </ul>
-                            </div> 
+                            </div>  
                          </div> 
                         <!-- col-lg-6 end here -->
                          <div class="col-lg-12">
@@ -66,25 +66,17 @@
                                          <tbody>
 											{% for item in ordered_products %} 
                                              <tr>
-                                                <td>{{item.prouct.product_name}}</td>
+                                                <td>{{item.product.product_name}}</td>
                                                 <td class="text-center">{{item.quantity}}</td>
                                                 <td class="text-center">{{item.product_price}}</td>
                                             </tr> 
                                              {% endfor %}
                                          </tbody> 
                                          <tfoot> 
+                                                                                         
                                              <tr>
-                                                <th colspan="2" class="text-right">Sub Total:</th>
-                                                <th class="text-center">{{$237.00 USD}}</th>
-                                            </tr> 
-                                             <tr>
-                                                <th colspan="2" class="text-right">Tax:</th>
-                                                <th class="text-center">$47.40 USD</th>
-                                            </tr>
-                                            
-                                             <tr>
-                                                <th colspan="2" class="text-right">Grand Total:</th>
-                                                <th class="text-center">$284.4.40 USD</th>
+                                                <th colspan="2" class="text-right"> Total:</th>
+                                                <th class="text-center">{{order.order_total}}</th>
                                             </tr> 
                                          </tfoot> 
                                      </table> 
@@ -103,5 +95,5 @@
          </div> 
         <!-- col-lg-12 end here -->
      </div> 
-     </div>  {% endcomment %}
+     </div>    
 {% endblock %}

@@ -49,3 +49,13 @@ class Variation(models.Model):
 
     def __unicode__(self):
         return self.product
+
+
+class Carousel(models.Model):
+    category    = models.ForeignKey(Category,on_delete=models.CASCADE)
+    title       = models.CharField(max_length=100)
+    banner_image       = models.ImageField(upload_to='products')
+    is_available = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title

@@ -1,17 +1,18 @@
 from django import forms
 
-from .models import Product, Variation
+from .models import Product, ReviewRating, Variation
 
 class ReviewForm(forms.ModelForm):
     class Meta:
-        # model = ReviewRating
+        model = ReviewRating
         fields = ['subject', 'review', 'rating']
 
 
 class ProductForm(forms.ModelForm):
+    images = forms.ImageField(required=False, error_messages = {'invalid':("image files only")}, widget=forms.FileInput)
     class Meta:
         model = Product
-        fields = ['product_name','description','price','is_available','stock','category']
+        fields = ['product_name','description','price','is_available','stock','category','images']
 
     def __init__(self,*args,**kwargs):
         super(ProductForm,self).__init__(*args,**kwargs)
@@ -35,9 +36,7 @@ class ProductForm(forms.ModelForm):
 
         self.fields['category'].widget.attrs['class']='form-control form-control-user'
 
-        # self.fields['product_image'].widget.attrs['placeholder']='Add images'
-        # self.fields['product_image'].widget.attrs['class']='form-control'
-        # self.fields['product_image'].widget.attrs['type']='file'
+       
 
 
 class VariationForm(forms.ModelForm):

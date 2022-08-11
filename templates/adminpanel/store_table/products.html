@@ -10,7 +10,18 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800"><u>Products Added</u></h1>
 
-   
+   <form action={% url 'productsearch' %} method='GET'
+        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" "style="background: #f8f9fa;">
+        <div class="input-group">
+            <input type="text" class="form-control bg-light border-2 small" placeholder="Search for..."
+                aria-label="Search" name="keywordss" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-dark border-2" type="submit">
+                    <i class="fa fa-search fa-sm"></i>
+                </button>
+            </div>
+        </div>
+    </form>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-body">
@@ -20,7 +31,7 @@
 
                     <tr>
                         <th>Product name</th>
-                        
+                        <th>Image</th>
                         <th>Price</th>
                         <th>Stock</th>
                         
@@ -36,7 +47,7 @@
                         {% for product in products %}
                             <tr>
                                 <td>{{product.product_name}}</td>
-                                
+                                <td><img style="width: 10em;height: 8em;" src="{{ product.images.url }}" alt="" /></td>
                                 <td>₹ {{product.price}}</td>
                                 <td>{{product.stock}}</td>
                                 

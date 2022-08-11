@@ -2,7 +2,105 @@
 {% load static %}
 
 {% block content %}
+<style>
+.hh-grayBox {
+  background-color: #F8F8F8;
+  margin-bottom: 20px;
+  padding: 35px;
+  margin-top: 20px;
+}
 
+.pt45 {
+  padding-top: 45px;
+}
+
+.order-tracking {
+  text-align: center;
+  width: 33.33%;
+  position: relative;
+  display: block;
+}
+
+.order-tracking .is-complete {
+  display: block;
+  position: relative;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  border: 0px solid #AFAFAF;
+  background-color: #f7be16;
+  margin: 0 auto;
+  transition: background 0.25s linear;
+  -webkit-transition: background 0.25s linear;
+  z-index: 2;
+}
+
+.order-tracking .is-complete:after {
+  display: block;
+  position: absolute;
+  content: '';
+  height: 14px;
+  width: 7px;
+  top: -2px;
+  bottom: 0;
+  left: 5px;
+  margin: auto 0;
+  border: 0px solid #AFAFAF;
+  border-width: 0px 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+}
+
+.order-tracking.completed .is-complete {
+  border-color: #27aa80;
+  border-width: 0px;
+  background-color: #27aa80;
+}
+
+.order-tracking.completed .is-complete:after {
+  border-color: #fff;
+  border-width: 0px 3px 3px 0;
+  width: 7px;
+  left: 11px;
+  opacity: 1;
+}
+
+.order-tracking p {
+  color: #A4A4A4;
+  font-size: 16px;
+  margin-top: 8px;
+  margin-bottom: 0;
+  line-height: 20px;
+}
+
+.order-tracking p span {
+  font-size: 14px;
+}
+
+.order-tracking.completed p {
+  color: #000;
+}
+
+.order-tracking::before {
+  content: '';
+  display: block;
+  height: 3px;
+  width: calc(100% - 40px);
+  background-color: #f7be16;
+  top: 13px;
+  position: absolute;
+  left: calc(-50% + 20px);
+  z-index: 0;
+}
+
+.order-tracking:first-child:before {
+  display: none;
+}
+
+.order-tracking.completed:before {
+  background-color: #27aa80;
+}
+</style>
 
 <div class="container " style="margin: 0 auto;width: 50%;padding: 50px;background: #f1f1f1;margin-top: 50px;margin-bottom: 50px;">
     <div class="row invoice row-printable ">
@@ -15,7 +113,7 @@
                         <!-- Start .row -->
                         <div class="col-lg-6">
                             <!-- col-lg-6 start here -->
-                            <a class="navbar-brand" href="#">TimeZone</a>
+                            <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">Time</span>Zone</h1>
                         </div>
                         <!-- col-lg-6 end here -->
                         <div class="col-lg-6">
@@ -40,7 +138,7 @@
                                         <li><strong>Order</strong>{{order.order_number}}</li>
                                         <li><strong>Transaction</strong> {{order.payment.payment_id}}</li>
                                         <li><strong>Order Date:</strong> {{order.created_at}}</li>
-                                        <li><strong>Status:</strong> {{order.payment.status}}</li>
+                                        <li><strong>Payment Status:</strong> {{order.payment.status}}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -76,26 +174,14 @@
                                             </tr>
                                             {% endfor %}
                                             
-                                            {% comment %} <tr>
-                                                <td>Logo design</td>
-                                                <td class="text-center">1</td>
-                                                <td class="text-center">$200.00 USD</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Backup - 1024MB Cloud 2.0 Server - elisium.dynamic.com</td>
-                                                <td class="text-center">12</td>
-                                                <td class="text-center">$12.00 USD</td>
-                                            </tr> {% endcomment %}
+                                            
                                         </tbody>
                                         <tfoot>
                                             <tr>
                                                 <th colspan="2" class="text-right">Sub Total:</th>
                                                 <th class="text-center">${{subtotal}}</th>
                                             </tr>
-                                            {% comment %} <tr>
-                                                <th colspan="2" class="text-right">Tax:</th>
-                                                <th class="text-center">$47.40 USD</th>
-                                            </tr> {% endcomment %}
+                                            
                                             
                                             <tr>
                                                 <th colspan="2" class="text-right">Grand Total:</th>
@@ -106,8 +192,45 @@
                                 </div>
                                 </div>
                             </div>
-                            <br>
-                            <br>
+                            <div class="container  ">
+                            <div class="row justify-content-centre" style="margin-left: 50px;">
+                            <div class="col-12 col-md-10 hh-grayBox pt45 pb20">
+                                <div class="row justify-content-between">
+                                    
+                                    <div class="order-tracking completed">
+                                        <span class="is-complete"></span>
+                                        <p>Ordered<br><span></span></p>
+                                    </div>
+                                    
+                                    
+                                    {% if is_shipped %}
+                                    <div class="order-tracking completed">
+                                        <span class="is-complete"></span>
+                                       
+                                        <p>Shipped<br><span></span></p>
+                                    </div>
+                                    {% else %}
+                                    <div class="order-tracking">
+                                        <span class="is-complete"></span>
+                                        <p>shipped<br><span></span></p>
+                                    </div>
+                                    {% endif %}
+                                    {% if is_delivered %}
+                                    <div class="order-tracking completed">
+                                        <span class="is-complete"></span>
+                                       
+                                        <p>delivered<br><span></span></p>
+                                    </div>
+                                    {% else %}
+                                    <div class="order-tracking">
+                                        <span class="is-complete"></span>
+                                        <p>Delivered<br><span></span></p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                             <div class="invoice-footer mt25">
                                 <p class="text-center">Thank you for shopping with us!</p>
                             </div>

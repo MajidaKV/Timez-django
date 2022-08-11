@@ -142,13 +142,12 @@ def place_order(request, total=0, quantity=0):
             return render(request,'payments.html',context)
     else:
         return redirect('checkout')
-    #return render(request,'checkout.html')
+    
 
 
 
 def order_complete(request):
-    #return render(request, 'order_complete.html')
-
+    
     order_number = request.GET.get('order_id')
     transID = request.GET.get('payment_id')
     try:
@@ -165,7 +164,9 @@ def order_complete(request):
         }
         return render(request, 'order_complete.html',context)
     except(Payment.DoesNotExist, Order.DoesNotExist):
-         return redirect('order_complete')
+        return redirect('order_complete')
+
+ 
 
     
     

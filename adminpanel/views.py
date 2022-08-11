@@ -1,7 +1,7 @@
 from django.contrib import messages,auth
 from django.shortcuts import redirect, render
 from shop.models import Account
-from carts.models import Cart,CartItem
+
 from category.forms import CategoryForm
 from category.models import Category
 from order.models import Order, OrderProduct, Payment
@@ -10,13 +10,13 @@ from store.models import  Carousel, Product, Variation
 from shop.models import Awesome
 from shop.forms import CarouselForm
 from django.template.defaultfilters import slugify
-from django.db.models import Sum,Count
+from django.db.models import Sum
 from django.contrib.auth.decorators import login_required 
-from django.db.models.functions import TruncMonth,TruncMinute,TruncDay
+from django.db.models.functions import TruncMinute
 import datetime
 from django.db.models import Q
 
-from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
+
 
 
 # Create your views here.
@@ -72,21 +72,7 @@ def unban_user(request,id):
     else:
         return redirect ('home')
     
-@login_required(login_url="login")
-def cart_table(request,id):
-    if request.user.is_superadmin:
-        carts = Cart.objects.all()
-        cart_items = CartItem.objects.all().filter(is_active =True)
-        context = {
-            'carts' : carts,
-            'cart_items' : cart_items,
-        }
-        if id==1:
-            return render(request,'adminpanel/cart_table/cart.html',context)
-        else:
-            return render(request,'adminpanel/cart_table/cart_items.html',context)
-    else:
-        return redirect ('home')
+
 
 @login_required(login_url="login")
 def category_table(request,id):
@@ -114,7 +100,7 @@ def add_category(request):
     if request.user.is_superadmin:
         form = CategoryForm()
         if request.method == 'POST':
-            form = CategoryForm(request.POST)
+            form = CategoryForm(request.POST,request.FILES)
             if form.is_valid():
                 category = form.save()
                 category_name = form.cleaned_data['category_name']
@@ -268,8 +254,7 @@ def add_product(request):
                 slug = slugify(product_name)
                 product.slug = slug
                 product.save()
-
-                
+                                
                 return redirect('store_table',id=1)
         else:
             form = ProductForm()
@@ -503,38 +488,69 @@ def adminpanel(request):
         return redirect('adminlogin')
 
 
+@login_required(login_url='adminpanel')
 def admin_search(request):
-    if 'keyword' in request.GET:
-        keyword = request.GET['keyword']
-        if keyword:
-            products = Product.objects.order_by('-created_date').filter(
-                Q(description__icontains = keyword) | Q(product_name__icontains = keyword) | Q(brand__icontains = keyword)
-                )
-            orders = Order.objects.order_by('-created_date').filter(
-                Q(order_number__icontains= keyword) | Q(address_line_1__icontains= keyword)
-                | Q(status__icontains = keyword) 
-            )
+    if 'keywords' in request.GET:
+        keywords = request.GET['keywords']
+        if keywords:
+           products = Product.objects.order_by('-created_date').filter(Q(description__icontains=keywords) | Q(product_name__icontains=keywords))
             
-
-            
-            paginator = Paginator(products,9)
-            page = request.GET.get('page')
-            paged_proucts = paginator.get_page(page)
-
-            product_count = products.count()
-        else:
-            products = Product.objects.all()
-            paginator = Paginator(products,9)
-            page = request.GET.get('page')
-            paged_proucts = paginator.get_page(page)
-
-            product_count = products.count()
         context = {
-            'products':paged_proucts,
-            'product_count' : product_count,
-            'orders' : orders,
+           
+            'products':products,
 
         }
         
-        return render(request,'adminpanel/search.html',context)
+        return render(request,'adminpanel/store_table/products.html',context)
     return redirect('adminpanel')
+
+
+def variationsearch(request):
+    variations=[]
+    if 'keywordss' in request.GET:
+        keywordss=request.GET['keywordss']
+    
+        if keywordss:
+            variations=Variation.objects.order_by('-created_date').filter(Q(variation_category__icontains=keywordss)|Q(variation_value__icontains=keywordss))
+        context={
+            'variations':variations,
+        }
+    return render(request,'adminpanel/store_table/variations.html',context)
+def productsearch(request):
+    products=[]
+    if 'keywordss' in request.GET:
+        keywordss=request.GET['keywordss']
+    
+        if keywordss:
+            products=Product.objects.order_by('-created_date').filter(Q(product_name__icontains=keywordss))
+        context={
+            'products':products,
+        }
+    return render(request,'adminpanel/store_table/products.html',context)
+def adminuserdetails(request):
+    user=[]
+    if 'keywordss' in request.GET:
+        
+        keyword=request.GET['keywordss']
+        if keyword:
+            user=Account.objects.filter(Q(first_name__icontains=keyword)|Q(last_name__icontains=keyword)|Q(email__icontains=keyword)|Q(phone_number__icontains=keyword)|Q(username__icontains=keyword))
+            print(user)
+            context={
+                'active_users':user,
+                
+            }
+    return render(request,'adminpanel/admin_accounts/active_users.html',context)
+
+def ordersearch(request):
+    
+    orders=[]
+    if 'keywords' in request.GET:
+        
+        keyword=request.GET['keywords']
+        if keyword:
+            orders=OrderProduct.objects.order_by('-created_at').filter(Q(product__product_name__icontains=keyword)|Q(user__email__icontains=keyword))
+            context={
+                
+                'order_products':orders,
+            }
+    return render(request,'adminpanel/order_table/order_products.html',context)

@@ -5,7 +5,7 @@
 
 
     <!-- Page Header Start -->
-    <div class="container-fluid bg-secondary mb-5">
+    <div class="container-fluid bg-secondary mb-5" style="height: 410px">
         
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
             {% if 'search' in request.path %}
@@ -194,7 +194,7 @@
                             <div class="card-footer d-flex justify-content-between bg-light border">
                         <a href="{{ product.get_url }}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
                         <a href="{% url 'add_cart' product.id %}" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                        <a href="#" class="btn btn-sm text-dark p-0"><i class="fas fa-heart text-primary mr-1 ml-4"></i>Wishlist</a>
+                        <a href="{% url 'add_wishlist' product.id %}" class="btn btn-sm text-dark p-0"><i class="fas fa-heart text-primary mr-1 ml-4"></i>Wishlist</a>
                     </div>
                         </div>
                     </div>

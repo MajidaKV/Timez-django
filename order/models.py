@@ -63,6 +63,8 @@ class OrderProduct(models.Model):
     quantity = models.IntegerField()
     product_price = models.FloatField()
     ordered = models.BooleanField(default=True)
+    is_shipped = models.BooleanField(default=False)
+    is_delivered = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

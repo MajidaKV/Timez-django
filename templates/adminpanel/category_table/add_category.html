@@ -42,13 +42,13 @@
             <!-- File input -->
             <div class="mb-3 row">
                 <label for="formFile" class="col-md-2 col-form-label">category Image</label>
-                {{form.image}}
+                {{form.cat_image}}
             </div>
 
-            <div class="mb-3 row">
+            {% comment %} <div class="mb-3 row">
                 <label for="formFile" class="col-md-2 col-form-label">Other Images</label>
                 <input class="form-control" name="image" type="file" id="formFileMultiple" multiple />
-            </div>
+            </div> {% endcomment %}
 
             <div class="d-flex justify-content-end">
                 <a href="" class="btn btn-outline-danger"

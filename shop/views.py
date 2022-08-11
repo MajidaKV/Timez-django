@@ -7,7 +7,7 @@ from order.models import Order, OrderProduct
 from .forms import RegistrationForm, UserForm, UserProfileForm
 from .models import Account, UserProfile
 from django.contrib import messages,auth
-from django.contrib.auth import authenticate, login, logout
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 #verification email
@@ -59,7 +59,6 @@ def register(request):
             send_email=EmailMessage(mail_subject,message,to=[to_email])
             send_email.send()
             #messages.success(request,'Thank you for register with us...verify your email address')
-            #return redirect('login')
             messages.success(request,'Registration successful')
             return redirect('register')
     else:
@@ -280,7 +279,6 @@ def change_password(request):
             if success:
                 user.set_password(new_password)
                 user.save()
-                # auth.logout(request)
                 messages.success(request, 'Password updated successfully')
                 return redirect('change_password')
             else:
@@ -295,6 +293,24 @@ def change_password(request):
 def order_detail(request, order_id):
     order_detail = OrderProduct.objects.filter(order__order_number=order_id)
     order = Order.objects.get(order_number=order_id)
+
+    try:
+        if order.status == 'Accepted':
+            order_detail.is_shipped = True
+        else:
+            order_detail.is_shipped = False
+    except:
+        pass
+    try:
+        if order.status == 'Completed':
+            order_detail.is_delivered = True
+            order_detail.is_shipped = True
+        else:
+            order_detail.is_delivered = False
+    except:
+        pass
+
+    
     subtotal = 0
     for i in order_detail:
         subtotal += i.product_price * i.quantity
@@ -302,12 +318,12 @@ def order_detail(request, order_id):
         'order_detail' : order_detail,
         'order' : order,
         'subtotal' : subtotal,
+        'is_shipped': order_detail.is_shipped,
+        'is_delivered': order_detail.is_delivered,
+        
     }
     return render(request, 'order_detail.html', context)
 
 
-# def cancel_order(request,id):
-#     order = Order.objects.get(id=id)
-#     order.delete()
-#     return redirect(request, 'order_detail.html')
+
     

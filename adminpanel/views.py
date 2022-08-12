@@ -454,7 +454,10 @@ def delete_carousel(request,id):
 @login_required(login_url="login")
 def adminpanel(request):
     if request.user.is_superadmin:
-        total_revenue = round( Order.objects.filter(is_ordered = True).aggregate(sum = Sum('order_total'))['sum'])
+        try:
+            total_revenue =round( Order.objects.filter(is_ordered = True).aggregate(sum = Sum('order_total'))['sum'])
+        except:
+            total_revenue=0
 
 
         total_cost= round((total_revenue * .80))

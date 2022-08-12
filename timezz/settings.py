@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-4=h*yt^kbx-czeha%+o7ki)d^8^xb2#4^w(!z8c3_1j(8a($^#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['3.110.31.45']
 
 
 
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'order',
     'adminpanel',
     'wishlist',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -87,10 +88,11 @@ AUTH_USER_MODEL = 'shop.Account'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'timez',
-        'USER': 'majida',
-        'PASSWORD': '1234',
-        'HOST': '',
+        'NAME': 'timezz',
+        'USER': 'postgres',
+        'PASSWORD': 'Shazilkv.786',
+        'HOST': 'database-1.cmtodgeof4pq.ap-south-1.rds.amazonaws.com',
+        'PORT':'5432'
     }
 }
 
@@ -132,15 +134,18 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS=[
-    BASE_DIR /'static'
+    BASE_DIR /'timezz/static'
 ]
 
 # media files configaration
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media'
 
+# MEDIA_ROOT=os.path.join(BASE_DIR,'/media')
+# STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
 
 # Default primary key field type
+
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -160,3 +165,14 @@ EMAIL_USE_TLS = True
 
 KEY = 'rzp_test_NNYgytwoxPgefB'
 SECRET ='93YDoFVC5WOPBN7CXkBFynBr'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = True
+AWS_DEFAULT_ACL = None
+
+AWS_ACCESS_KEY_ID = 'AKIAUAGYWUELUANJ63NI'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'timezz-bucket'
+

@@ -78,9 +78,9 @@
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
-                <a href="" class="btn border">
+                <a href="{% url 'wishlists' %}" class="btn border">
                     <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge">{{wishlist_count}}</span>
                 </a>
                 <a href="{% url 'cart' %}" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
@@ -123,15 +123,12 @@
                         <div class="navbar-nav mr-auto py-0">
                             <a href="{% url 'home' %}" class="nav-item nav-link">Home</a>
                             <a href="{% url 'store' %}" class="nav-item nav-link">Shop</a>
-                            <a href="#" class="nav-item nav-link">Shop Detail</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu rounded-0 m-0">
-                                    <a href="{% url 'cart' %}" class="dropdown-item">Shopping Cart</a>
-                                    <a href="{% url 'checkout' %}" class="dropdown-item">Checkout</a>
-                                </div>
-                            </div>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="{% url 'wishlists' %}" class="nav-item nav-link">Wishlist</a>
+                    
+                            <a href="{% url 'cart' %}" class="nav-item nav-link">Shopping Cart</a>
+                            <a href="{% url 'checkout' %}" class="nav-item nav-link">Checkout</a>
+                                
+                            {% comment %} <a href="contact.html" class="nav-item nav-link">Contact</a> {% endcomment %}
                         </div>
                         {% if user.id is None %}
                         <div class="navbar-nav ml-auto py-0">

@@ -15,6 +15,7 @@ class WishlistItem(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     wishlist = models.ForeignKey(Wishlist,on_delete=models.CASCADE, null=True)
+    
     is_active = models.BooleanField(default=True)
    
     def unicode(self):

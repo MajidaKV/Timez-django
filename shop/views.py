@@ -57,7 +57,9 @@ def register(request):
             })
             to_email=email
             send_email=EmailMessage(mail_subject,message,to=[to_email])
-            send_email.send()
+            send_email.send(
+                
+            )
             #messages.success(request,'Thank you for register with us...verify your email address')
             messages.success(request,'Registration successful')
             return redirect('register')

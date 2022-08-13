@@ -88,12 +88,12 @@ AUTH_USER_MODEL = 'shop.Account'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'timezz',
-        'USER': 'postgres',
-        'PASSWORD': 'Shazilkv.786',
-        'HOST': 'database-1.cmtodgeof4pq.ap-south-1.rds.amazonaws.com',
-        'PORT':'5432'
+        'ENGINE': config('ENGINE'),
+        'NAME':  config('NAME'),
+        'USER':  config('DB_USER'),
+        'PASSWORD':  config('PASSWORD'),
+        'HOST':  config('HOST',default='localhost'),
+        'PORT': config('PORT',cast=int),
     }
 }
 
@@ -164,8 +164,8 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS',cast=bool)
 
-KEY = 'rzp_test_NNYgytwoxPgefB'
-SECRET ='93YDoFVC5WOPBN7CXkBFynBr'
+KEY = config('KEY')
+SECRET =config('SECRET')
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'

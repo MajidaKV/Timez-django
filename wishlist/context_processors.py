@@ -3,18 +3,22 @@ from .models import Wishlist, WishlistItem
 
 
 def counter(request):
-    wishlist_count=0
+    wish_counter=0
+    wishlist_itams=None
     if 'admin' in request.path:
-        return {}
+        return{}
     else:
         try:
-            wishlist=Wishlist.objects.filter(_wishlist_id=_wishlist_id(request))
-            if request.user.is_authenticated:
-                wishlist_items=WishlistItem.objects.all().filter(user=request.user)
+            wishlist = Wishlist.objects.get(wishlist_id=_wishlist_id(request))
+            wishlist_itams=WishlistItem.objects.filter(wishlist=wishlist, is_active = True),
+            if wishlist_itams!=0:
+                wish_counter=WishlistItem.objects.filter(wishlist=wishlist, is_active = True).count()
             else:
-                wishlist_items=WishlistItem.objects.all().filter(wishlist=wishlist[:1])
-            for wishlist_item in wishlist_items:
-                wishlist_count += wishlist_item.quantity
+                wish_counter=0
         except Wishlist.DoesNotExist:
-            wishlist_count=0
-    return dict(wishlist_count=wishlist_count)
+            wish_counter=0
+            pass
+    return {
+       'wishlist_itams':WishlistItem.objects.filter(wishlist=wishlist, is_active = True),
+       'wish_counter':wish_counter,
+     }

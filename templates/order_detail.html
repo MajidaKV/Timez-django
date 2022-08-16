@@ -143,22 +143,26 @@
                                 </div>
                             </div>
                            <br>
+                           <hr>
+                           <br>
                             <div class="invoice-items justify-content-center align-items-center ">
                                 <div class="container-fluid ">
-                                <div class="table-responsive" style="overflow: hidden; outline: none;margin: auto; width: 50% !important;" tabindex="0">
+
+                 
+                                <div class="table-responsive" style="overflow: hidden; outline:none;margin-left:150px; width: 70% !important;" tabindex="0">
                                     <table class="tables table-bordered mr-3" >
                                         <thead>
                                             <tr>
-                                                <th class="per70 text-center p-3">Products</th>
-                                                <th class="per5 text-center p-3">Qty</th>
-                                                <th class="per25 text-center p-3">Total</th>
+                                                <th class="align-middle text-dark per70 text-center p-3 ">Products<hr></th>
+                                                <th class="align-middle text-dark per5 text-center p-3 ">Qty<hr></th>
+                                                <th class="align-middle text-dark per25 text-center p-3 ">Total<hr></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% for item in order_detail %}
                                             <tr>
                                                 
-                                                <td>{{item.product.product_name}}
+                                                <td class="align-middle text-dark">{{item.product.product_name}}<img src="{{item.product.images.url }}" alt="" style="width: 50px;">
                                                     <p class="text-muted small">
                                                         {% if item.variations.all%}
                                                           {% for i in item.variations.all %}
@@ -168,10 +172,11 @@
                                                         {% endif %}
                                                       </p>
                                                 </td>
-                                                <td class="text-center">{{item.quantity}}</td>
-                                                <td class="text-center">${{item.product_price}}</td>
-                                                
+                                                <td class="align-middle text-dark text-center">{{item.quantity}}</td>
+                                                <td class="align-middle text-dark text-center">${{item.product_price}}</td>
+                                                 
                                             </tr>
+                                           
                                             {% endfor %}
                                             
                                             
@@ -189,6 +194,8 @@
                                             </tr>
                                         </tfoot>
                                     </table>
+                                    <br>
+                                    <br>
                                 </div>
                                 </div>
                             </div>

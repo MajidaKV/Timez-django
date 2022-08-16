@@ -37,9 +37,11 @@
                         <thead>
 
                             <tr>
+                                
                                 <th>Product</th>
                                 <th>User</th>
-                                <th>Order</th>
+                                <th>Name</th>
+                               
                                 <th>Quantity</th>
                                 <th>Product price</th>
                                 <th>Payment ID</th>
@@ -51,14 +53,18 @@
 
                             {% if order_products %}
                                 {% for order_prodcut in order_products %}
+                                    
                                     <tr>
+                                        
                                         <td>{{order_prodcut.product}}</td>
                                         <td>{{order_prodcut.user}}</td>
                                         <td>{{order_prodcut.order}}</td>
+                                        
                                         <td>{{order_prodcut.quantity}}</td>
                                         <td>₹ {{order_prodcut.product_price}}</td>
                                         <td>{{order_prodcut.payment_id}}</td>
                                     </tr>
+                                    
                                 {% endfor %}
                             {% endif %}
                             

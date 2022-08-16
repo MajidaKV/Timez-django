@@ -25,6 +25,7 @@ def wishlist(request,wishlist_items=None):
     return render(request,'wishlist.html',context)
 
 def add_wishlist(request,product_id):
+    wishlist = None
     product = Product.objects.get(id= product_id)  
     try:    
         wishlist = Wishlist.objects.get(wishlist_id = _wishlist_id(request))
